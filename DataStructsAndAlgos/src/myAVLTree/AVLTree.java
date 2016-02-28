@@ -17,10 +17,10 @@ public class AVLTree {
 		this.root = root;
 	}
 	public Node insert(Node newNode){
-		return insert(newNode, root);
+		return insert(newNode, getRoot());
 	}
 
-	public Node insert(Node newNode, Node treeNode){
+	private Node insert(Node newNode, Node treeNode){
 
 		if(treeNode==null){
 			return new Node(newNode.getKey(), null, null, null,0);
