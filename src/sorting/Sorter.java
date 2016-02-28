@@ -139,6 +139,8 @@ public class Sorter {
 
 		return arr;		
 	}
+	
+
 
 
 	public static int[] insertionSort(int [] arr){
@@ -160,6 +162,38 @@ public class Sorter {
 			key=arr[i];
 			j=i-1;
 			while (j>=0 && key<arr[j]){
+
+				temp=arr[j];
+				arr[j]=key;
+				arr[j+1]=temp;
+
+				j--;
+			}
+		}
+		return arr;
+
+	}
+	
+	public static Comparable[] insertionSort(Comparable [] arr){
+
+		/*
+		 * for i in 1 to n-1
+		 * 		insert A[i] into sorted Array A[0:i-1]
+		 * 		by pairwise swap down to correct position
+		 *  
+		 *  in place algo
+		 *  	does not use any extra space
+		 *  theta(n^2)
+		 *  
+		 * */
+		Comparable key=null;
+		int j=0;
+		Comparable temp=null;
+		for(int i=1; i<arr.length; i++){
+			key=arr[i];
+			j=i-1;
+			//while (j>=0 && key<arr[j]){
+			while(j>=0 && (key.compareTo(arr[j])<=0)){
 
 				temp=arr[j];
 				arr[j]=key;
