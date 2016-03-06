@@ -2,6 +2,7 @@ package search;
 
 import java.util.Random;
 import sorting.Sorter;
+import myAVLTree.Node;
 
 public class Searcher {
 
@@ -26,6 +27,19 @@ public class Searcher {
 			return binarySearch(arr, item, startIndex, endIndex);
 		}
 		
+	}
+	
+	public static Node bstSearcher(Node treeNode, Node keyNode){
+		
+		if(treeNode==null || treeNode.equals(keyNode)){
+			return treeNode;
+		}
+		if(keyNode.compareTo(treeNode)<=0){
+			return bstSearcher(treeNode.getLeftChild(), keyNode);
+		}
+		else{
+			return bstSearcher(treeNode.getRightChild(), keyNode);
+		}
 	}
 
 	public static void main(String[] args){

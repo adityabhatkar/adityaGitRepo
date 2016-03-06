@@ -1,5 +1,8 @@
 package myAVLTree;
 
+import search.Searcher;
+
+
 public class AVLTree {
 
 	private Node root;
@@ -28,12 +31,19 @@ public class AVLTree {
 
 		if(newNode.compareTo(treeNode)<=0){			
 			//newNode<=treeNode
-			treeNode.setLeftChild(insert(newNode, treeNode.getLeftChild()));			
+			treeNode.setLeftChild(insert(newNode, treeNode.getLeftChild()));
+
+			//set parent
+			treeNode.getLeftChild().setParent(treeNode);
 		}
 		else{
 			//newNode>treeNode
 			treeNode.setRightChild(insert(newNode, treeNode.getRightChild()));
+			//set parent
+			treeNode.getRightChild().setParent(treeNode);
 		}
+
+		
 		
 		//update height
 		treeNode.setHeight(getNodeHeight(treeNode));
@@ -96,6 +106,14 @@ public class AVLTree {
 		x.setLeftChild(treeNode);
 		treeNode.setRightChild(subTree);
 		
+		//updating parents
+		x.setParent(treeNode.getParent());
+		treeNode.setParent(x);
+		if(subTree!=null){
+			subTree.setParent(treeNode);
+		}
+		
+		
 		return x;
 	}
 	private Node rightRotation(Node treeNode) {
@@ -109,6 +127,13 @@ public class AVLTree {
 		//update heights
 		treeNode.setHeight(getNodeHeight(treeNode));
 		x.setHeight(getNodeHeight(x));
+		
+		//updating parents
+		x.setParent(treeNode.getParent());
+		treeNode.setParent(x);
+		if(subTree!=null){
+			subTree.setParent(treeNode);
+		}
 		
 		return x;
 			
@@ -152,6 +177,54 @@ public class AVLTree {
 		return getMax(leftChildHeight, rightChildHeight)+1;
 		
 	}
+	
+	public Node findTreeMinimum(Node node){
+		
+		while(node.getLeftChild()!=null){
+			node=node.getLeftChild();
+		}
+		return node;
+		
+	}
+	
+	public Node findTreeMaximum(Node node){
+		
+		while(node.getRightChild()!=null){
+			node=node.getRightChild();
+		}
+		return node;
+		
+	}
+	
+	public Node getSuccessor(Node node){
+		
+		if(node.getRightChild()!=null){
+			return findTreeMinimum(node.getRightChild());
+		}
+		
+		Node parent=node.getParent();
+		while(parent!=null && node.equals(parent.getRightChild())){
+			node=parent;
+			parent=parent.getParent();
+		}
+		
+		return parent;
+		
+	}
+	
+	public Node getPredecessor(Node node){
+		
+		if(node.getLeftChild()!=null){
+			return findTreeMaximum(node.getLeftChild());
+		}
+		
+		Node parent=node.getParent();
+		while(parent!=null && node.equals(parent.getLeftChild())){
+			node=parent;
+			parent=parent.getParent();
+		}
+		return parent;
+	}
 
 	public static void main(String[] args){
 
@@ -159,7 +232,7 @@ public class AVLTree {
 		AVLTree avlTree=new AVLTree();
 	
 		Node newRoot=null;
-		int[] keyArr={10,20,15,7,6,2,4,1,10};
+		int[] keyArr={10,20,15,7,6,2,4,1};
 		for(int i=0; i<keyArr.length; i++){
 			System.out.println("insert "+keyArr[i]);
 			newRoot=avlTree.insert(new Node(keyArr[i], null, null, null,0));
@@ -169,6 +242,39 @@ public class AVLTree {
 		
 		//insert operation in theta(Lg(n)) time
 		//sorting n elements in theta(nLg(n)) time
+		
+		//find minimum
+		Node minNode=avlTree.findTreeMinimum(avlTree.getRoot());		
+		System.out.println("Printing Min "+minNode);
+		
+		//find maximum
+		Node maxNode=avlTree.findTreeMaximum(avlTree.getRoot());
+		System.out.println("Printing Max "+maxNode);
+		
+		//search node with key 
+		Node keyNode=Searcher.bstSearcher(avlTree.getRoot(), new Node(10));
+		System.out.println("found "+keyNode);
+		//get Successor
+		Node successor=avlTree.getSuccessor(keyNode);
+		System.out.println("Get Successor of "+keyNode+" "+successor);
+		
+		Node predecessor=avlTree.getPredecessor(keyNode);
+		System.out.println("Get predecessor of "+keyNode+" "+predecessor);
+		
+		
+		/*
+		 * to find second smallest/largest element
+		 * pass min/max node as arg to get successor/predecessor
+		 * 
+		 * */
+		
+		successor=avlTree.getSuccessor(minNode);
+		System.out.println("second smallest node "+successor);
+		
+		predecessor=avlTree.getPredecessor(maxNode);
+		System.out.println("second largest node "+predecessor);
+		
+		
 	}
 
 	public void inOrderTraversal(Node node){

@@ -17,6 +17,11 @@ public class Node implements Comparable<Node>{
 		this.height=height;
 	}
 
+	public Node(int key){
+		super();
+		this.key = key;
+		
+	}
 	public int getKey() {
 		return key;
 	}
@@ -65,7 +70,6 @@ public class Node implements Comparable<Node>{
 		return result;
 	}
 
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
