@@ -1,0 +1,14 @@
+Sorting:
+ref: http://stackoverflow.com/revisions/15154287/2
+Java prefers using merge sort instead of quick sort-
+1. Merge sort is stable.
+  Relative positions  of elements are maintained of elements with equal values.
+  This is helpful in scenarios such as sorting email list by name and then date.
+  Stability is a non issue for primitive data types.  
+  
+2. Quick sort gives quadratic time complexities.
+
+However Quick sort is inplace requires only O(lg (n)) extra memory (for method call stack)
+Merge sort needs O(n) extra space.
+  
+  
